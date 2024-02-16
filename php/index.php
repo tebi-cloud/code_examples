@@ -23,7 +23,7 @@ $s3Client = new Aws\S3\S3Client([
         "secret" => YOUR_SECRET
     ],
     "endpoint" => "https://s3.tebi.io",
-	"region" => "global"
+    "region" => "global"
 ]);
 
 echo "Listing available buckets: "."\n";
@@ -40,7 +40,6 @@ $result = $s3Client->putObject([
     'SourceFile' => "./composer.json",
 ]);
 echo "Upload result: ".$result["@metadata"]["statusCode"]."\n"."---"."\n";
-
 
 echo "Content of bucket:"."\n"."---"."\n";
 $objs = $s3Client->listObjects(['Bucket' => TEST_BUCKET]);
