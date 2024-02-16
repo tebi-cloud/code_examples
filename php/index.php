@@ -12,18 +12,21 @@ use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
 
 
+const YOUR_KEY = '<INSERT YOUR KEY HERER>';
+const YOUR_SECRET = '<INSERT YOUR SECRET>';
+const TEST_BUCKET = '<INSERT YOUR BUCKET NAME HERE>';
+
 /* initialize connection*/
 $s3Client = new Aws\S3\S3Client([
     "credentials" => [
-        "key" => "YOUR_KEY",
-        "secret" => "YOUR_SECRET"
+        "key" => YOUR_KEY,
+        "secret" => YOUR_SECRET
     ],
     "endpoint" => "https://s3.tebi.io",
-    "region" => "de",
-    "version" => "2006-03-01"
+	"region" => "global"
 ]);
 
-echo "Lising available buckets: "."\n";
+echo "Listing available buckets: "."\n";
 $buckets = $s3Client->listBuckets();
 foreach($buckets["Buckets"] as $b) {
     echo $b["Name"] . "\n";
@@ -32,7 +35,7 @@ echo "---"."\n";
 
 echo "Uploading test file..."."\n";
 $result = $s3Client->putObject([
-    'Bucket' => "pytest-datastream",
+    'Bucket' => TEST_BUCKET,
     'Key' => "composer.json",
     'SourceFile' => "./composer.json",
 ]);
@@ -40,8 +43,7 @@ echo "Upload result: ".$result["@metadata"]["statusCode"]."\n"."---"."\n";
 
 
 echo "Content of bucket:"."\n"."---"."\n";
-$objs = $s3Client->listObjects(['Bucket' => "pytest-datastream"]);
+$objs = $s3Client->listObjects(['Bucket' => TEST_BUCKET]);
 foreach($objs["Contents"] as $o) {
     echo $o["Key"]."\n";
 }
-?>
